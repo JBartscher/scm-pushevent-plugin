@@ -1,16 +1,16 @@
 {
   "scm-pushevent-plugin": {
     "settings": {
-      "navLink": "Push Event Plugin",
-      "title": "Push Event Plugin Config"
+      "navLink": "Push Event",
+      "title": "Push Event Config"
     },
     "config": {
       "form": {
-        "active": "aktiv",
-        "activeHelpText": "Solange diese Checkbox aktiv ist wird jedes Push Event verarbeitet.",
+        "active": "Aktiv",
+        "activeHelpText": "Verarbeitet Push Events.",
         "endpointUrl": "URL zum Endpoint",
-        "endpointUrlHelpText": "URL zu demjenigen Endpunkt zu dem das Push Event Plugin seine Daten senden soll.",
-        "token": "Authentifizierungs token",
+        "endpointUrlHelpText": "URL zum Ziel Endpunkt der Push Event Daten.",
+        "token": "Authentifizierungstoken",
         "tokenHelpText": "JWT Auth token. Dieser Token kann von einem Admin des events.clougogu.com Projekts generiert werden."
       }
     }

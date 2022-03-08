@@ -21,34 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import React, {FC, useEffect, useState} from "react";
-import {Checkbox, Configuration, InputField} from "@scm-manager/ui-components";
-import {useTranslation} from "react-i18next";
+import React, { FC, useEffect, useState } from "react";
+import { Checkbox, InputField } from "@scm-manager/ui-components";
+import { useTranslation } from "react-i18next";
 
-export type Configuration = {
+export type PushEventConfiguration = {
   url: string;
   active: boolean;
-  token: string
+  token: string;
 };
 
 type Props = {
-  initialConfiguration: Configuration;
-  onConfigurationChange: (p1: Configuration, p2: boolean) => void;
+  initialConfiguration: PushEventConfiguration;
+  onConfigurationChange: (p1: PushEventConfiguration, p2: boolean) => void;
 };
 
-const GlobalPushEventConfigurationForm: FC<Props> = ({initialConfiguration, onConfigurationChange}) => {
+const GlobalPushEventConfigurationForm: FC<Props> = ({ initialConfiguration, onConfigurationChange }) => {
   const [t] = useTranslation("plugins");
 
-  const [url, setUrl] = useState<string>(initialConfiguration.url);
-  const [active, setActive] = useState<boolean>(initialConfiguration.active);
-  const [token, setToken] = useState<string>(initialConfiguration.token);
+  const [url, setUrl] = useState(initialConfiguration.url);
+  const [active, setActive] = useState(initialConfiguration.active);
+  const [token, setToken] = useState(initialConfiguration.token);
 
   useEffect(() => {
-    onConfigurationChange({url, active, token}, isValidConfig());
+    onConfigurationChange({ url, active, token }, isValidConfig());
   }, [url, active, token]);
 
   const isValidConfig = () => {
-    if(url != null && token != null){
+    if (url != null && token != null) {
       return url.length > 0;
     }
     return false;
@@ -56,19 +56,23 @@ const GlobalPushEventConfigurationForm: FC<Props> = ({initialConfiguration, onCo
 
   return (
     <>
-      <Checkbox checked={active} label={"Activated"} name={"onOffToggle"}
-                helpText={t("scm-pushevent-plugin.config.form.activeHelpText")}
-                onChange={active => setActive(active)}/>
+      <Checkbox
+        checked={active}
+        label={"Activated"}
+        name={"onOffToggle"}
+        helpText={t("scm-pushevent-plugin.config.form.activeHelpText")}
+        onChange={v => setActive(v)}
+      />
       <InputField
         label={t("scm-pushevent-plugin.config.form.endpointUrl")}
-        onChange={url => setUrl(url)}
+        onChange={v => setUrl(v)}
         type="text"
         value={url}
         helpText={t("scm-pushevent-plugin.config.form.endpointUrlHelpText")}
       />
       <InputField
         label={t("scm-pushevent-plugin.config.form.token")}
-        onChange={token => setToken(token)}
+        onChange={v => setToken(v)}
         type="text"
         value={token}
         helpText={t("scm-pushevent-plugin.config.form.tokenHelpText")}

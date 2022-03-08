@@ -24,7 +24,7 @@
 
 
 plugins {
-  id 'org.scm-manager.smp' version '0.8.5'
+  id 'org.scm-manager.smp' version '0.8.3'
 }
 
 dependencies {
@@ -45,10 +45,10 @@ dependencies {
 
 scmPlugin {
   scmVersion = "2.0.0"
-  displayName = "push-event"
+  displayName = "Push Event"
   description = "plugin that sends json to a REST Enpoint when a push to scm-manager happens"
 
-  author = "jbartscher"
+  author = "Cloudogu GmbH"
   category = "Workflow"
 
   openapi {

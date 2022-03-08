@@ -1,3 +1,26 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2020-present Cloudogu GmbH and Contributors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.jb.pushevent;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,8 +29,6 @@ import com.jb.pushevent.dto.FileChanges;
 import com.jb.pushevent.dto.Push;
 import com.jb.pushevent.pathcollect.PathCollectFactory;
 import com.jb.pushevent.pathcollect.PathCollector;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.subject.Subject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +39,6 @@ import sonia.scm.repository.Changeset;
 import sonia.scm.repository.Person;
 import sonia.scm.repository.Repository;
 import sonia.scm.repository.RepositoryHookEvent;
-import sonia.scm.repository.api.HookChangesetBuilder;
 import sonia.scm.repository.api.HookContext;
 import sonia.scm.repository.api.HookFeature;
 
@@ -28,43 +48,40 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class PushEventSubscriberTest {
 
+  @Mock
+  private HookContext mockContext;
 
   @Mock
-  HookContext mockContext;
+  private RepositoryHookEvent mockRepositoryHookEvent;
 
   @Mock
-  RepositoryHookEvent mockRepositoryHookEvent;
+  private PathCollectFactory mockPathCollectorFactory;
 
   @Mock
-  PathCollectFactory mockPathCollectorFactory;
+  private PathCollector mockPathCollector;
 
   @Mock
-  PathCollector mockPathCollector;
+  private Provider<AdvancedHttpClient> mockHttpClientProvider;
 
   @Mock
-  Provider<AdvancedHttpClient> mockHttpClientProvider;
+  private Repository mockRepository;
 
   @Mock
-  Repository mockRepository;
+  private PushEventConfigurationStore mockPushEventConfigurationStore;
 
   @Mock
-  PushEventConfigurationStore mockPushEventConfigurationStore;
+  private Subject subject;
 
-  @Mock
-  HookChangesetBuilder mockHookChangesetBuilder;
-
-  @Mock
-  Subject subject;
-
-
-  private Set<Changeset> createTestChangesets(){
+  private Set<Changeset> createTestChangesets() {
     Set<Changeset> changesets = new HashSet<>();
 
     Person p1 = new Person("Jeff Bezos", "jeff.bezos@mail.com");
@@ -84,15 +101,12 @@ class PushEventSubscriberTest {
 
   @Inject
   @Test
-  public void createPushObjectFromEvent() throws IOException {
+  void createPushObjectFromEvent() throws IOException {
 
     Set<Changeset> changesets = createTestChangesets();
 
     when(mockRepositoryHookEvent.getContext()).thenReturn(mockContext);
     when(mockContext.isFeatureSupported(HookFeature.CHANGESET_PROVIDER)).thenReturn(true);
-    when(mockContext.isFeatureSupported(HookFeature.CHANGESET_PROVIDER)).thenReturn(true);
-    //when(mockContext.getChangesetProvider()).thenReturn(mockHookChangesetBuilder);
-    //when(mockHookChangesetBuilder.getChangesets()).thenReturn(changesets);
 
     when(mockPathCollectorFactory.create(mockRepository)).thenReturn(mockPathCollector);
     when(mockPathCollector.collectAll(any())).thenReturn(new FileChanges(new ObjectMapper().createObjectNode()));

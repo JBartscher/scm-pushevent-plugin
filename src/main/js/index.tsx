@@ -23,12 +23,12 @@
  */
 
 import React from "react";
-import {ConfigurationBinder as configurationBinder} from "@scm-manager/ui-components";
+import { ConfigurationBinder as configurationBinder } from "@scm-manager/ui-components";
 import GlobalPushEventConfiguration from "./GlobalPushEventConfiguration";
 
 configurationBinder.bindGlobal(
-  "/pushevent/", "scm-pushevent-plugin.settings.navLink", "pushevent", GlobalPushEventConfiguration
-)
-
-//binder.bind("", "");
-
+  "/pushevent/",
+  "scm-pushevent-plugin.settings.navLink",
+  "pushevent",
+  GlobalPushEventConfiguration
+);

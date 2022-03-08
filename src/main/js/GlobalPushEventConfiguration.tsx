@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 import React, { FC } from "react";
-import { Title, Configuration } from "@scm-manager/ui-components";
+import { Configuration, Title } from "@scm-manager/ui-components";
 import { useTranslation } from "react-i18next";
 import GlobalPushEventConfigurationForm from "./GlobalPushEventConfigurationForm";
 
@@ -30,16 +30,15 @@ type Props = {
   link: string;
 };
 
-const GlobalTraceMonitorConfiguration: FC<Props> = ({ link }) => {
+const GlobalPushEventConfiguration: FC<Props> = ({ link }) => {
   const [t] = useTranslation("plugins");
-
 
   return (
     <>
       <Title title={t("scm-pushevent-plugin.settings.title")} />
-      <Configuration link={link} t={t} render={props => <GlobalPushEventConfigurationForm {...props} />} />
+      <Configuration link={link} render={(props) => <GlobalPushEventConfigurationForm {...props} />} />
     </>
   );
 };
 
-export default GlobalTraceMonitorConfiguration;
+export default GlobalPushEventConfiguration;
